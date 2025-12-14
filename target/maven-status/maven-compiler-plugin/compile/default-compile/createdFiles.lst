@@ -1,0 +1,8 @@
+com\example\webapp\service\DataProcessor.class
+com\example\webapp\service\FileService.class
+com\example\webapp\service\DataStore.class
+com\example\webapp\model\User.class
+com\example\webapp\Application.class
+com\example\webapp\controller\WebController.class
+com\example\webapp\config\DataInitializer.class
+com\example\webapp\repository\UserRepository.class

@@ -1,0 +1,192 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Web Application</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            max-width: 800px;
+            margin: 50px auto;
+            padding: 20px;
+        }
+        .section {
+            margin: 30px 0;
+            padding: 20px;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+        }
+        h2 {
+            color: #333;
+        }
+        input, button {
+            margin: 5px;
+            padding: 8px;
+        }
+        button {
+            background: #007bff;
+            color: white;
+            border: none;
+            cursor: pointer;
+            border-radius: 3px;
+        }
+        button:hover {
+            background: #0056b3;
+        }
+        .result {
+            margin-top: 10px;
+            padding: 10px;
+            background: #f8f9fa;
+            border-radius: 3px;
+        }
+    </style>
+</head>
+<body>
+    <h1>Application Dashboard</h1>
+    
+    <div class="section">
+        <h2>User Authentication</h2>
+        <input type="text" id="username" placeholder="Username">
+        <input type="password" id="password" placeholder="Password">
+        <button onclick="login()">Login</button>
+        <div id="loginResult" class="result"></div>
+    </div>
+    
+    <div class="section">
+        <h2>User Profile</h2>
+        <input type="text" id="profileName" placeholder="Profile name">
+        <button onclick="viewProfile()">View Profile</button>
+        <div id="profileResult" class="result"></div>
+    </div>
+    
+    <div class="section">
+        <h2>Data Processing</h2>
+        <input type="text" id="processData" placeholder="Data to process">
+        <button onclick="processData()">Process</button>
+        <div id="processResult" class="result"></div>
+    </div>
+    
+    <div class="section">
+        <h2>File Operations</h2>
+        <input type="text" id="filepath" placeholder="File path">
+        <button onclick="readFile()">Read File</button>
+        <br>
+        <input type="text" id="uploadName" placeholder="Filename">
+        <input type="text" id="uploadContent" placeholder="Content">
+        <button onclick="uploadFile()">Upload</button>
+        <div id="fileResult" class="result"></div>
+    </div>
+    
+    <div class="section">
+        <h2>Resource Loader</h2>
+        <input type="text" id="resourcePath" placeholder="Resource path">
+        <button onclick="loadResource()">Load Resource</button>
+        <div id="resourceResult" class="result"></div>
+    </div>
+    
+    <div class="section">
+        <h2>Search</h2>
+        <input type="text" id="searchQuery" placeholder="Search query">
+        <button onclick="search()">Search</button>
+        <div id="searchResult" class="result"></div>
+    </div>
+    
+    <div class="section">
+        <h2>Admin Panel</h2>
+        <button onclick="accessAdmin()">Access Admin</button>
+        <div id="adminResult" class="result"></div>
+    </div>
+
+    <script>
+        function login() {
+            const username = document.getElementById('username').value;
+            const password = document.getElementById('password').value;
+            
+            fetch('/login', {
+                method: 'POST',
+                headers: {'Content-Type': 'application/x-www-form-urlencoded'},
+                body: `username=${username}&password=${password}`
+            })
+            .then(r => r.text())
+            .then(data => {
+                document.getElementById('loginResult').innerHTML = data;
+            });
+        }
+        
+        function viewProfile() {
+            const name = document.getElementById('profileName').value;
+            window.open(`/profile?name=${name}`, '_blank');
+        }
+        
+        function processData() {
+            const data = document.getElementById('processData').value;
+            
+            fetch('/update', {
+                method: 'POST',
+                headers: {'Content-Type': 'application/x-www-form-urlencoded'},
+                body: `data=${data}`
+            })
+            .then(r => r.text())
+            .then(result => {
+                document.getElementById('processResult').innerHTML = result;
+            });
+        }
+        
+        function readFile() {
+            const path = document.getElementById('filepath').value;
+            
+            fetch(`/file?path=${path}`)
+            .then(r => r.text())
+            .then(data => {
+                document.getElementById('fileResult').innerHTML = data;
+            });
+        }
+        
+        function uploadFile() {
+            const filename = document.getElementById('uploadName').value;
+            const content = document.getElementById('uploadContent').value;
+            
+            fetch('/upload', {
+                method: 'POST',
+                headers: {'Content-Type': 'application/x-www-form-urlencoded'},
+                body: `filename=${filename}&content=${content}`
+            })
+            .then(r => r.text())
+            .then(data => {
+                document.getElementById('fileResult').innerHTML = data;
+            });
+        }
+        
+        function loadResource() {
+            const path = document.getElementById('resourcePath').value;
+            
+            fetch(`/resource?name=${path}`)
+            .then(r => r.text())
+            .then(data => {
+                document.getElementById('resourceResult').innerHTML = data;
+            });
+        }
+        
+        function search() {
+            const query = document.getElementById('searchQuery').value;
+            
+            fetch('/search', {
+                method: 'POST',
+                headers: {'Content-Type': 'application/x-www-form-urlencoded'},
+                body: `query=${query}`
+            })
+            .then(r => r.text())
+            .then(data => {
+                document.getElementById('searchResult').innerHTML = data;
+            });
+        }
+        
+        function accessAdmin() {
+            fetch('/admin')
+            .then(r => r.text())
+            .then(data => {
+                document.getElementById('adminResult').innerHTML = data;
+            });
+        }
+    </script>
+</body>
+</html>
